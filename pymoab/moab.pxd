@@ -58,7 +58,7 @@ cdef extern from "moab/Range.hpp" namespace "moab":
         size_t psize()
         bint empty()
         void clear()
-        void print()
+        #void print()
 
 
 cdef extern from "moab/Core.hpp" namespace "moab":
@@ -80,13 +80,13 @@ cdef extern from "moab/Core.hpp" namespace "moab":
         ErrorCode write_file(const char *file_name, const char *file_type, 
                              const char *options, const EntityHandle *output_sets, 
                              int num_output_sets)
-        ErrorCode write_file(const char *file_name, const char *file_type, 
-                             const char *options, const EntityHandle *output_sets, 
-                             int num_output_sets, const Tag *tag_list) 
-        ErrorCode write_file(const char *file_name, const char *file_type, 
-                             const char *options, const EntityHandle *output_sets, 
-                             int num_output_sets, const Tag *tag_list, 
-                             int num_tags)
+        #ErrorCode write_file(const char *file_name, const char *file_type, 
+        #                     const char *options, const EntityHandle *output_sets, 
+        #                     int num_output_sets, const Tag *tag_list) 
+        #ErrorCode write_file(const char *file_name, const char *file_type, 
+        #                     const char *options, const EntityHandle *output_sets, 
+        #                     int num_output_sets, const Tag *tag_list, 
+        #                     int num_tags)
 
         ErrorCode create_meshset(const unsigned int options, EntityHandle &ms_handle)
         ErrorCode create_meshset(const unsigned int options, EntityHandle &ms_handle, int start_id=0)
