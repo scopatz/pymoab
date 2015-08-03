@@ -1,6 +1,11 @@
 """Implements core functionality."""
+from cython.operator cimport dereference as deref
+
+cimport numpy as np
+import numpy as np
 
 from . cimport moab
+from .range cimport Range
 
 cdef class Core(object):
 
@@ -28,3 +33,23 @@ cdef class Core(object):
         if err > 1:
             raise RuntimeError('This error happened: {0}'.format(err))
         return ms_handle
+
+    def create_vertices(self, np.ndarray[np.float64_t, ndim=3] coordinates):
+        cdef Range rng = Range()
+        cdef moab.ErrorCode err = self.inst.create_vertices(<double *> coordinates.data, 
+                                                            len(coordinates),
+                                                            deref(rng.inst))
+        if err > 1:
+            raise RuntimeError('This error happened: {0}'.format(err))
+        return rng
+
+    def create_element(self, int t, np.ndarray[np.uint64_t, ndim=1] connectivity):
+        cdef moab.EntityType typ = <moab.EntityType> t
+        cdef moab.EntityHandle handle
+        cdef int nnodes = len(connectivity)
+        cdef moab.ErrorCode err = self.inst.create_element(typ,
+            <unsigned long*> connectivity.data, nnodes, handle)
+        if err > 1:
+            raise RuntimeError('This error happened: {0}'.format(err))
+        return handle
+
