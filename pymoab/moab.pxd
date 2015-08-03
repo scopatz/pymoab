@@ -52,13 +52,13 @@ cdef extern from "moab/Range.hpp" namespace "moab":
 
     cdef cppclass Range:
         Range()
-        Range (EntityHandle val1, EntityHandle val2)
+        Range(EntityHandle val1, EntityHandle val2)
 
         size_t size()
         size_t psize()
         bint empty()
         void clear()
-        #void print()
+        void print_ "print" ()
 
 
 cdef extern from "moab/Core.hpp" namespace "moab":
