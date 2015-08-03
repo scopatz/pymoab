@@ -30,7 +30,7 @@ cdef class Core(object):
     def create_meshset(self, unsigned int options):
         cdef moab.EntityHandle ms_handle
         cdef moab.ErrorCode err = self.inst.create_meshset(options, ms_handle)
-        if err > 1:
+        if err > 0:
             raise RuntimeError('This error happened: {0}'.format(err))
         return ms_handle
 
@@ -39,7 +39,7 @@ cdef class Core(object):
         cdef moab.ErrorCode err = self.inst.create_vertices(<double *> coordinates.data, 
                                                             len(coordinates),
                                                             deref(rng.inst))
-        if err > 1:
+        if err > 0:
             raise RuntimeError('This error happened: {0}'.format(err))
         return rng
 
@@ -49,7 +49,7 @@ cdef class Core(object):
         cdef int nnodes = len(connectivity)
         cdef moab.ErrorCode err = self.inst.create_element(typ,
             <unsigned long*> connectivity.data, nnodes, handle)
-        if err > 1:
+        if err > 0:
             raise RuntimeError('This error happened: {0}'.format(err))
         return handle
 
