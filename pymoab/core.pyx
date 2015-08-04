@@ -34,6 +34,10 @@ cdef class Core(object):
         check_error(err)
         return ms_handle
 
+    def add_entities(self, moab.EntityHandle ms_handle, np.ndarray[np.uint64_t, ndim=1] entities):
+        cdef moab.ErrorCode err = self.inst.add_entities(ms_handle, <unsigned long*> entities.data, len(entities))
+        check_error(err)
+
     def create_vertices(self, np.ndarray[np.float64_t, ndim=1] coordinates):
         cdef Range rng = Range()
         cdef moab.ErrorCode err = self.inst.create_vertices(<double *> coordinates.data, 

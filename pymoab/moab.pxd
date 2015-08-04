@@ -94,6 +94,9 @@ cdef extern from "moab/Core.hpp" namespace "moab":
         ErrorCode create_meshset(const unsigned int options, EntityHandle &ms_handle)
         ErrorCode create_meshset(const unsigned int options, EntityHandle &ms_handle, int start_id)
 
+        ErrorCode add_entities(EntityHandle meshset, const EntityHandle *entities, int num_entities)
+        ErrorCode add_entities(EntityHandle meshset, const Range &entities)
+ 
         ErrorCode create_vertices(const double *coordinates, const int nverts,
                                   Range &entity_handles)   
 
