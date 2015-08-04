@@ -37,7 +37,7 @@ cdef class Core(object):
     def create_vertices(self, np.ndarray[np.float64_t, ndim=1] coordinates):
         cdef Range rng = Range()
         cdef moab.ErrorCode err = self.inst.create_vertices(<double *> coordinates.data, 
-                                                            len(coordinates),
+                                                            len(coordinates)//3,
                                                             deref(rng.inst))
         if err > 0:
             raise RuntimeError('This error happened: {0}'.format(err))
