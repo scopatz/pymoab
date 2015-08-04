@@ -29,7 +29,7 @@ cdef dict _ERROR_MSGS = {
     MB_ENTITY_NOT_FOUND: (RuntimeError, 'Entity not found'),
     MB_MULTIPLE_ENTITIES_FOUND: (RuntimeError, 'Multiple entities found'),
     MB_TAG_NOT_FOUND: (RuntimeError, 'Tag not found'),
-    MB_FILE_DOES_NOT_EXIST: (FileNotFoundError, '[MOAB]'),
+    MB_FILE_DOES_NOT_EXIST: (IOError, 'File not found'),
     MB_FILE_WRITE_ERROR: (IOError, 'File write error'), 
     MB_NOT_IMPLEMENTED: (NotImplementedError, '[MOAB]'),
     MB_ALREADY_ALLOCATED: (MemoryError, 'already allocated'),
