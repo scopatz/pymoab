@@ -13,6 +13,20 @@ cdef extern from "moab/Types.hpp" namespace "moab":
         MB_TYPE_HANDLE   = 4
         MB_MAX_DATA_TYPE = 4
 
+    cdef enum TagType:
+        MB_TAG_BIT    
+        MB_TAG_SPARSE
+        MB_TAG_DENSE 
+        MB_TAG_MESH  
+        MB_TAG_BYTES 
+        MB_TAG_VARLEN
+        MB_TAG_CREAT 
+        MB_TAG_EXCL  
+        MB_TAG_STORE 
+        MB_TAG_ANY   
+        MB_TAG_NOOPQ 
+        MB_TAG_DFTOK 
+
 cdef extern from "moab/TagInfo.hpp" namespace "moab":
 
     cdef cppclass TagInfo:
@@ -158,7 +172,7 @@ cdef extern from "moab/Core.hpp" namespace "moab":
         ErrorCode tag_get_handle(const char* name, 
                                  int size, DataType type, 
                                  Tag & tag_handle, 
-                                 unsigned flags = 0, 
+                                 unsigned flags, 
                                  const void * default_value = 0, 
                                  bool * created = 0)
         ErrorCode tag_set_data(Tag& tag,

@@ -8,6 +8,7 @@ from . cimport moab
 from .tag cimport Tag
 from .range cimport Range
 from .types import check_error
+from . import types
 
 cdef class Core(object):
 
@@ -82,7 +83,7 @@ cdef class Core(object):
 
     def tag_get_handle(self, const char* name, int size, moab.DataType type):
         cdef Tag tag = Tag()
-        cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, type, tag.inst)
+        cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, type, tag.inst, types.MB_TAG_DENSE|types.MB_TAG_CREAT)
         check_error(err)
         return tag
     
