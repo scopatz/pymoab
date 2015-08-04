@@ -5,6 +5,7 @@ cimport numpy as np
 import numpy as np
 
 from . cimport moab
+from .tag cimport Tag
 from .range cimport Range
 from .types import check_error
 
@@ -79,5 +80,10 @@ cdef class Core(object):
             check_error(err)
         return handles
 
-    
+    def tag_get_handle(self, const char* name, int size, moab.DataType type):
+        cdef Tag tag = Tag()
+        cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, type, tag.inst)
+        check_error(err)
+        return tag
+      
     

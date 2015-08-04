@@ -5,6 +5,22 @@ from libcpp.string cimport string as std_string
 
 cdef extern from "moab/Types.hpp" namespace "moab":
 
+    cdef enum DataType:
+        MB_TYPE_OPAQUE   = 0
+        MB_TYPE_INTEGER  = 1
+        MB_TYPE_DOUBLE   = 2
+        MB_TYPE_BIT      = 3
+        MB_TYPE_HANDLE   = 4
+        MB_MAX_DATA_TYPE = 4
+
+cdef extern from "moab/TagInfo.hpp" namespace "moab":
+
+    cdef cppclass TagInfo:
+        TagInfo()
+        DataType get_data_type()
+
+cdef extern from "moab/Types.hpp" namespace "moab":
+
     cdef enum ErrorCode:
         MB_SUCCESS  
         MB_INDEX_OUT_OF_RANGE   
@@ -24,6 +40,30 @@ cdef extern from "moab/Types.hpp" namespace "moab":
         MB_STRUCTURED_MESH  
         MB_FAILURE 
 
+    ctypedef TagInfo* Tag;
+
+# cdef extern from "moab/SequenceManager.hpp" namespace "moab":
+
+#     cdef cppclass SequenceManager:
+#         SequenceManager()
+
+# cdef extern from "moab/Error.hpp" namespace "moab":
+
+#     cdef cppclass Error:
+#         Error()
+
+# cdef extern from "moab/DenseTag.hpp" namespace "moab": 
+
+#     cdef cppclass DenseTag:
+#         DenseTag()
+#         DataType get_data_type()
+#         @staticmethod
+#         DenseTag* create_tag(SequenceManager* seqman, 
+#                              Error* error,
+#                              const char* name,
+#                              int bytes, 
+#                              DataType type, 
+#                              const void* default_value)
 
 cdef extern from "moab/EntityType.hpp" namespace "moab":
 
@@ -115,3 +155,9 @@ cdef extern from "moab/Core.hpp" namespace "moab":
                                    vector[EntityHandle] & connectivity,
                                    bool corners_only,
                                    vector[int] * offsets)   
+        ErrorCode tag_get_handle(const char* name, 
+                                 int size, DataType type, 
+                                 Tag & tag_handle, 
+                                 unsigned flags = 0, 
+                                 const void * default_value = 0, 
+                                 bool * created = 0) 
