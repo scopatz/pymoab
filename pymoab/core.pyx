@@ -85,5 +85,16 @@ cdef class Core(object):
         cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, type, tag.inst)
         check_error(err)
         return tag
-      
+    
+    def tag_set_data(self, Tag tag, np.ndarray[np.uint64_t, ndim=1] entity_handles, np.ndarray data):
+        cdef moab.ErrorCode err
+        cdef Range r
+        cdef np.ndarray[np.uint64_t, ndim=1] arr
+        if isinstance(entity_handles,Range):
+            r = entity_handles
+            err = self.inst.tag_set_data(tag.inst, deref(r.inst), <const void*> data.data)
+        else:
+            arr = entity_handles
+            err = self.inst.tag_set_data(tag.inst, <unsigned long*> arr.data, len(entity_handles), <const void*> data.data)
+        check_error(err)
     

@@ -160,4 +160,11 @@ cdef extern from "moab/Core.hpp" namespace "moab":
                                  Tag & tag_handle, 
                                  unsigned flags = 0, 
                                  const void * default_value = 0, 
-                                 bool * created = 0) 
+                                 bool * created = 0)
+        ErrorCode tag_set_data(Tag& tag,
+                               const EntityHandle* entity_handles,
+                               int num_entities, 
+                               const void * data)
+        ErrorCode tag_set_data(Tag& tag, 
+                               Range& entity_handles, 
+                               const void * data)
