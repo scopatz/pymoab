@@ -1,4 +1,5 @@
 """Implements range functionality."""
+from cython.operator cimport dereference as deref
 
 from . cimport moab
 
@@ -32,3 +33,6 @@ cdef class Range(object):
         """clears the contents of the list."""
         self.inst.clear()
 
+    def __getitem__(self, int index):
+        cdef moab.EntityHandle rtn = deref(self.inst)[index]
+        return rtn

@@ -45,6 +45,7 @@ cdef extern from "moab/EntityType.hpp" namespace "moab":
 
 cdef extern from "moab/EntityHandle.hpp" namespace "moab":
 
+    ctypedef long EntityID
     ctypedef unsigned long EntityHandle
 
 
@@ -59,6 +60,8 @@ cdef extern from "moab/Range.hpp" namespace "moab":
         bint empty()
         void clear()
         void print_ "print" ()
+
+        EntityHandle operator[](EntityID index)
 
 
 cdef extern from "moab/Core.hpp" namespace "moab":
