@@ -101,11 +101,6 @@ def yt2moab_uniform_gridgen(mb,ds):
                 connectivity = ref_index+offsets
 
                 conn_arr[j+i*ney+k*nex*ney] = [vert_handles[connectivity[elem]] for elem in range(8)]
-
-                # for elem in range(len(connectivity)):
-                #     conn_arr[elem] = vert_handles[connectivity[elem]]
-                    
-                # hex_handles[i+j*nex+k*nex*ney] = mb.create_element(moab_hex_type, conn_arr)
         
                 k+=1
             j+=1
@@ -115,7 +110,6 @@ def yt2moab_uniform_gridgen(mb,ds):
 
     #create hex elements
     hex_handles = mb.create_elements( types.MBHEX, conn_arr)
-
 
     #gather data for the grid from yt
     dd = ds.all_data()
