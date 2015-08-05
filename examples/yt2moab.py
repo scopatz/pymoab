@@ -1,4 +1,5 @@
-
+"""Example of pymoab use in translating a structured, uniform yt mesh to MOAB.
+yt installation is required for this example to work."""
 
 import yt, argparse, sys
 import numpy as np
@@ -64,7 +65,7 @@ def yt2moab_uniform_gridgen(mb,ds):
                 coords[ref_index] = le[0] + i*dx
                 coords[ref_index+1] = le[1] + j*dy
                 coords[ref_index+2] = le[2] + k*dz
-                print (i,j,k), (coords[ref_index],coords[ref_index+1],coords[ref_index+2])
+
                 i+=1
             j+=1
         k+=1
@@ -115,17 +116,21 @@ def yt2moab_uniform_gridgen(mb,ds):
     #create hex elements
     hex_handles = mb.create_elements( types.MBHEX, conn_arr)
 
-    field = ds.field_list[-1]
-    
+
+    #gather data for the grid from yt
     dd = ds.all_data()
 
-    data_arr = dd['Density']
-
-    #create field tag
-    density_tag = mb.tag_get_handle("density", 1, 2)
+    #add data to the mesh for each field
+    for field in ds.field_list: 
     
-    #randomly tag :) 
-    mb.tag_set_data(density_tag, hex_handles, data_arr)
+        field_name = field[-1]
+        data_arr = dd[field_name]
+    
+        #create field tag
+        density_tag = mb.tag_get_handle(field_name, 1, 2)
+    
+        #randomly tag :) 
+        mb.tag_set_data(density_tag, hex_handles, data_arr)
 
 
     #add created vertices and elements to meshset
