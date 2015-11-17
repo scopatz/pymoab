@@ -1,17 +1,25 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
-import os
+import sys, os
 import numpy as np
 from Cython.Build import cythonize
 
 moab_env_var = 'MOAB_PATH'
+moab_root = None
 
-try:
-    moab_root = os.environ[moab_env_var]
-except KeyError:
-    raise EnvironmentError('MOAB_PATH not found in environment.')
+for arg in sys.argv:
+    if "--moab-path" in arg:
+        moab_root = arg.split("=")[-1]
+        print "Set MOAB location with user-provided install path."
+        sys.argv.remove(arg)
 
+if moab_root is None:    
+    try:
+        moab_root = os.environ[moab_env_var]
+    except KeyError:
+        raise EnvironmentError('MOAB_PATH not found in environment.')
+    
 moab_include = moab_root + '/include/'
 moab_lib = moab_root + '/lib/'
 
