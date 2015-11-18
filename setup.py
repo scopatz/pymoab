@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
-import sys, os
+import os
+import sys
 import numpy as np
 from Cython.Build import cythonize
 
@@ -12,7 +13,7 @@ moab_default = '/usr/'
 #look for command line argument
 for arg in sys.argv:
     if "--moab-path" in arg:
-        moab_root = arg.split("=")[-1]
+        moab_root = arg.split("=", 1)[-1]
         print "Set MOAB location with user-provided install path."
         sys.argv.remove(arg)
 
