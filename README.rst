@@ -18,7 +18,12 @@ PyMOAB has the following dependencies:
 
 After these steps are complete PyMOAB can be installed using the command line:
 
-```python setup.py install --user```
+```python setup.py install --user``` if the path is provided in the environment variable `MOAB_PATH`
+
+OR
+
+``python setup.py install --user --moab-path=<moab_installation_dir>```
+
 
 Testing
 -------
