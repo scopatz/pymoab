@@ -14,11 +14,15 @@ for arg in sys.argv:
         print "Set MOAB location with user-provided install path."
         sys.argv.remove(arg)
 
-if moab_root is None:    
+if moab_root is None:
     try:
         moab_root = os.environ[moab_env_var]
     except KeyError:
         raise EnvironmentError('MOAB_PATH not found in environment.')
+
+if not os.path.isfile(moab_root+'/include/moab/Core.hpp'):
+    raise StandardError('Provided MOAB location is invalid.')
+
     
 moab_include = moab_root + '/include/'
 moab_lib = moab_root + '/lib/'
