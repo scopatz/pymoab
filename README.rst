@@ -22,7 +22,7 @@ After these steps are complete PyMOAB can be installed using the command line:
 
 OR
 
-``python setup.py install --user --moab-path=<moab_installation_dir>```
+```python setup.py install --user --moab-path=<moab_installation_dir>```
 
 
 Testing
