@@ -45,10 +45,11 @@ def check_error(int err, **kwargs):
     """Checks error status code and raises error if needed."""
     if 'exceptions' in kwargs:
         exceptions = kwargs['exceptions']
-        for exception in exceptions:
-            if err == exception: return
+        if isinstance (exceptions,(list,tuple)):
+            for exception in exceptions:
+                if err == exception: return
     if 'exceptions' in kwargs and kwargs['exceptions'] == err:
-        return
+            return
     if err == moab.MB_SUCCESS:
         return
     errtype, msg = _ERROR_MSGS[err]
