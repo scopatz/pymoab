@@ -30,9 +30,10 @@ cdef class Core(object):
         cdef const char * file_name = cfname
         self.inst.write_file(fname)
 
-    def create_meshset(self, unsigned int options):
+    def create_meshset(self, unsigned int options = 0x02 ):
         cdef moab.EntityHandle ms_handle = 0
-        cdef moab.ErrorCode err = self.inst.create_meshset(options, ms_handle)
+        cdef moab.EntitySetProperty es_property = <moab.EntitySetProperty> options 
+        cdef moab.ErrorCode err = self.inst.create_meshset(es_property, ms_handle)
         check_error(err)
         return ms_handle
 

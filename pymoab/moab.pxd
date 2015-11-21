@@ -5,6 +5,11 @@ from libcpp.string cimport string as std_string
 
 cdef extern from "moab/Types.hpp" namespace "moab":
 
+    ctypedef enum EntitySetProperty:
+        MESHSET_TRACK_OWNER = 0x01
+        MESHSET_SET = 0x02
+        MESHSET_ORDERED = 0x03
+
     cdef enum DataType:
         MB_TYPE_OPAQUE   = 0
         MB_TYPE_INTEGER  = 1
