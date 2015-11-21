@@ -22,7 +22,7 @@ def yt2moab_uniform_gridgen(mb,ds):
     """Generates a uniform grid in a moab instance (mb) meshset which is representative of the yt grid dataset (ds)"""
 
     #create a meshset for this grid
-    msh = mb.create_meshset(1)
+    msh = mb.create_meshset()
 
     domain = ds.domain_dimensions
 
