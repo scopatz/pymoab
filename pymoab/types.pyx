@@ -43,6 +43,15 @@ cdef dict _ERROR_MSGS = {
     MB_FAILURE: (RuntimeError, '[MOAB] failure'),
     }
 
+cdef dict _DTYPE_CONV = {
+    MB_TYPE_OPAQUE   : 'int8',
+    MB_TYPE_INTEGER  : 'int32',
+    MB_TYPE_DOUBLE   : 'float32',
+    MB_TYPE_BIT      : 'yikes',
+    MB_TYPE_HANDLE   : 'uint64',
+    MB_MAX_DATA_TYPE : 'uint64'
+    }
+
 def check_error(int err, tuple exceptions, **kwargs):
     """Checks error status code and raises error if needed."""
     for exception in exceptions:
