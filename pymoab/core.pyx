@@ -7,7 +7,7 @@ import numpy as np
 from . cimport moab
 from .tag cimport Tag
 from .range cimport Range
-from .types import check_error
+from .types import check_error, np_tag_type
 from . import types
 
 cdef class Core(object):
@@ -102,9 +102,18 @@ cdef class Core(object):
         check_error(err, exceptions)
 
     def tag_get_data(self, Tag tag, np.ndarray[np.uint64_t, ndim=1] entity_handles, exceptions = []):
-          cdef moab.ErrorCode err
-          cdef Range r
-          cdef np.ndarray[np.uint64_t, ndim=1] arr
-          cdef moab.DataType type
-          err = self.inst.tag_get_data_type(tag.inst, type);
-	  check_error(err)
+        cdef moab.ErrorCode err
+        cdef Range r
+        cdef np.ndarray[np.uint64_t, ndim=1] arr
+        cdef moab.DataType type
+        err = self.inst.tag_get_data_type(tag.inst, type);
+        check_error(err, exceptions)
+        cdef np.ndarray data = np.empty((0,),dtype=np_tag_type(type))
+        if isinstance(entity_handles,Range):
+            r = entity_handles
+            err = self.inst.tag_get_data(tag.inst, deref(r.inst), <void*> data.data)
+        else:
+            arr = entity_handles
+            err = self.inst.tag_get_data(tag.inst, <unsigned long*> arr.data, len(entity_handles), <void*> data.data)
+        check_error(err,exceptions)
+        return data

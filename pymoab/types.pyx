@@ -1,6 +1,8 @@
 """Python wrappers for MOAB Types."""
 
 from . cimport moab
+cimport numpy as np
+import numpy as np
 
 # Error codes
 MB_SUCCESS = moab.MB_SUCCESS
@@ -41,15 +43,6 @@ cdef dict _ERROR_MSGS = {
     MB_FAILURE: (RuntimeError, '[MOAB] failure'),
     }
 
-cdef dict _DTYPE_CONV = {
-    MB_TYPE_OPAQUE   : 'int8',
-    MB_TYPE_INTEGER  : 'int32',
-    MB_TYPE_DOUBLE   : 'float32',
-    MB_TYPE_BIT      : 'yikes',
-    MB_TYPE_HANDLE   : 'uint64',
-    MB_MAX_DATA_TYPE : 'uint64'
-    }
-
 def check_error(int err, tuple exceptions, **kwargs):
     """Checks error status code and raises error if needed."""
     for exception in exceptions:
@@ -63,6 +56,26 @@ def check_error(int err, tuple exceptions, **kwargs):
         msg += ', '.join(sorted(['{0}={1!r}'.format(k, v) for k, v in kwargs.items()]))
     raise errtype(msg)
 
+# Data Types
+MB_TYPE_OPAQUE  = moab.MB_TYPE_OPAQUE 
+MB_TYPE_INTEGER  = moab.MB_TYPE_INTEGER
+MB_TYPE_DOUBLE   = moab.MB_TYPE_DOUBLE
+MB_TYPE_BIT      = moab.MB_TYPE_BIT   
+MB_TYPE_HANDLE   = moab.MB_TYPE_HANDLE
+MB_MAX_DATA_TYPE = moab.MB_MAX_DATA_TYPE
+
+_DTYPE_CONV = {
+    MB_TYPE_OPAQUE   : np.int8,
+    MB_TYPE_INTEGER  : np.int32,
+    MB_TYPE_DOUBLE   : np.float32,
+    MB_TYPE_BIT      : 'yikes',
+    MB_TYPE_HANDLE   : np.uint64,
+    MB_MAX_DATA_TYPE : np.uint64
+    }
+
+
+def np_tag_type(type):
+    return _DTYPE_CONV[type];
 
 # Entity types
 MBVERTEX = moab.MBVERTEX
@@ -93,10 +106,3 @@ MB_TAG_ANY = moab.MB_TAG_ANY
 MB_TAG_NOOPQ = moab.MB_TAG_NOOPQ 
 MB_TAG_DFTOK = moab.MB_TAG_DFTOK 
 
-# Data Types
-MB_TYPE_OPAQUE  = moab.MB_TYPE_OPAQUE 
-MB_TYPE_INTEGER  = moab.MB_TYPE_INTEGER
-MB_TYPE_DOUBLE   = moab.MB_TYPE_DOUBLE
-MB_TYPE_BIT      = moab.MB_TYPE_BIT   
-MB_TYPE_HANDLE   = moab.MB_TYPE_HANDLE
-MB_MAX_DATA_TYPE = moab.MB_MAX_DATA_TYPE
