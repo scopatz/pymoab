@@ -53,6 +53,20 @@ def test_tags():
 
     assert data[0] == test_val
 
+    test_tag = mb.tag_get_handle("Test2",4,types.MB_TYPE_OPAQUE)
+
+    test_val = 'four'
+
+    test_tag_data = np.array((list(test_val)),dtype='S1')
+
+    mb.tag_set_data(test_tag, vert_copy, test_tag_data)
+
+    data = mb.tag_get_data(test_tag, vert_copy)
+
+    assert len(data) == len(test_val)
+    
+    assert "".join(data) == test_val
+
     
 
     
