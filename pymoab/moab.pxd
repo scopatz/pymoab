@@ -174,3 +174,5 @@ cdef extern from "moab/Core.hpp" namespace "moab":
                                void* tag_data)
         ErrorCode tag_get_data_type(const Tag tag_handle,
 	                            DataType& type)
+        ErrorCode tag_get_length(const Tag tag_handle,
+                                 int & length)

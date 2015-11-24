@@ -65,7 +65,7 @@ MB_TYPE_HANDLE   = moab.MB_TYPE_HANDLE
 MB_MAX_DATA_TYPE = moab.MB_MAX_DATA_TYPE
 
 _DTYPE_CONV = {
-    MB_TYPE_OPAQUE   : np.int8,
+    MB_TYPE_OPAQUE   : 'S1',
     MB_TYPE_INTEGER  : np.int32,
     MB_TYPE_DOUBLE   : np.float64,
     MB_TYPE_BIT      : 'yikes',
