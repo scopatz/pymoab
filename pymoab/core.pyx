@@ -108,7 +108,7 @@ cdef class Core(object):
         cdef moab.DataType type
         err = self.inst.tag_get_data_type(tag.inst, type);
         check_error(err, exceptions)
-        cdef np.ndarray data = np.empty((0,),dtype=np_tag_type(type))
+        cdef np.ndarray data = np.empty((len(entity_handles),),dtype=np_tag_type(type))
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_get_data(tag.inst, deref(r.inst), <void*> data.data)
