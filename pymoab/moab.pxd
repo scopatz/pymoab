@@ -165,3 +165,6 @@ cdef extern from "moab/Core.hpp" namespace "moab":
         ErrorCode tag_set_data(Tag& tag, 
                                Range& entity_handles, 
                                const void * data)
+
+        ErrorCode tag_get_data_type(const Tag tag,
+	                            DataType& type);

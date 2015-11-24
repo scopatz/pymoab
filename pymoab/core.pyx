@@ -100,4 +100,11 @@ cdef class Core(object):
             arr = entity_handles
             err = self.inst.tag_set_data(tag.inst, <unsigned long*> arr.data, len(entity_handles), <const void*> data.data)
         check_error(err, exceptions)
-    
+
+    def tag_get_data(self, Tag tag, np.ndarray[np.uint64_t, ndim=1] entity_handles, exceptions = []):
+          cdef moab.ErrorCode err
+          cdef Range r
+          cdef np.ndarray[np.uint64_t, ndim=1] arr
+          cdef moab.DataType type
+          err = self.inst.tag_get_data_type(tag.inst, type);
+	  check_error(err)
