@@ -24,20 +24,21 @@ cdef class Core(object):
         """MOAB implementation number as a float."""
         return self.inst.impl_version()
 
-    def write_file(self, str fname):
+    def write_file(self, str fname, exceptions = ()):
         """Writes the MOAB data to a file."""
         cfname = fname.decode()
         cdef const char * file_name = cfname
-        self.inst.write_file(fname)
+        cdef moab.ErrorCode err = self.inst.write_file(fname)
+        check_error(err, exceptions)
 
-    def create_meshset(self, unsigned int options = 0x02):
+    def create_meshset(self, unsigned int options = 0x02, exceptions = ()):
         cdef moab.EntityHandle ms_handle = 0
         cdef moab.EntitySetProperty es_property = <moab.EntitySetProperty> options 
         cdef moab.ErrorCode err = self.inst.create_meshset(es_property, ms_handle)
-        check_error(err)
+        check_error(err, exceptions)
         return ms_handle
 
-    def add_entities(self, moab.EntityHandle ms_handle, entities):
+    def add_entities(self, moab.EntityHandle ms_handle, entities, exceptions = ()):
         cdef moab.ErrorCode err
         cdef Range r
         cdef np.ndarray[np.uint64_t, ndim=1] arr         
@@ -47,26 +48,26 @@ cdef class Core(object):
         else:
            arr = entities
            err = self.inst.add_entities(ms_handle, <unsigned long*> arr.data, len(entities))
-        check_error(err)
+        check_error(err, exceptions)
 
-    def create_vertices(self, np.ndarray[np.float64_t, ndim=1] coordinates):
+    def create_vertices(self, np.ndarray[np.float64_t, ndim=1] coordinates, exceptions = ()):
         cdef Range rng = Range()
         cdef moab.ErrorCode err = self.inst.create_vertices(<double *> coordinates.data, 
                                                             len(coordinates)//3,
                                                             deref(rng.inst))
-        check_error(err)
+        check_error(err, exceptions)
         return rng
 
-    def create_element(self, int t, np.ndarray[np.uint64_t, ndim=1] connectivity):
+    def create_element(self, int t, np.ndarray[np.uint64_t, ndim=1] connectivity, exceptions = ()):
         cdef moab.EntityType typ = <moab.EntityType> t
         cdef moab.EntityHandle handle = 0
         cdef int nnodes = len(connectivity)
         cdef moab.ErrorCode err = self.inst.create_element(typ,
             <unsigned long*> connectivity.data, nnodes, handle)
-        check_error(err)
+        check_error(err, exceptions)
         return handle
 
-    def create_elements(self, int t, np.ndarray[np.uint64_t, ndim=2] connectivity):
+    def create_elements(self, int t, np.ndarray[np.uint64_t, ndim=2] connectivity, exceptions = ()):
         cdef int i
         cdef moab.ErrorCode err
         cdef moab.EntityType typ = <moab.EntityType> t
@@ -79,16 +80,16 @@ cdef class Core(object):
             connectivity_i = connectivity[i]
             err = self.inst.create_element(typ, <unsigned long*> connectivity_i.data,
                                            nnodes, deref((<unsigned long*> handles.data)+i))
-            check_error(err)
+            check_error(err, exceptions)
         return handles
 
-    def tag_get_handle(self, const char* name, int size, moab.DataType type):
+    def tag_get_handle(self, const char* name, int size, moab.DataType type, exceptions = ()):
         cdef Tag tag = Tag()
         cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, type, tag.inst, types.MB_TAG_DENSE|types.MB_TAG_CREAT)
-        check_error(err)
+        check_error(err, exceptions)
         return tag
     
-    def tag_set_data(self, Tag tag, np.ndarray[np.uint64_t, ndim=1] entity_handles, np.ndarray data):
+    def tag_set_data(self, Tag tag, np.ndarray[np.uint64_t, ndim=1] entity_handles, np.ndarray data, exceptions = ()):
         cdef moab.ErrorCode err
         cdef Range r
         cdef np.ndarray[np.uint64_t, ndim=1] arr
@@ -98,5 +99,5 @@ cdef class Core(object):
         else:
             arr = entity_handles
             err = self.inst.tag_set_data(tag.inst, <unsigned long*> arr.data, len(entity_handles), <const void*> data.data)
-        check_error(err)
+        check_error(err, exceptions)
     

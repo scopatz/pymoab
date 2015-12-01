@@ -41,9 +41,12 @@ cdef dict _ERROR_MSGS = {
     MB_FAILURE: (RuntimeError, '[MOAB] failure'),
     }
 
-def check_error(int err, **kwargs):
+def check_error(int err, tuple exceptions, **kwargs):
     """Checks error status code and raises error if needed."""
-    if err == 0:
+    for exception in exceptions:
+        if exception == err:
+            return
+    if err == moab.MB_SUCCESS:
         return
     errtype, msg = _ERROR_MSGS[err]
     if len(kwargs) > 0:
