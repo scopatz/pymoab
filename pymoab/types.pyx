@@ -79,7 +79,10 @@ def np_tag_type(type):
 
 def verify_type(exp_type,act_type):
     if exp_type == MB_TYPE_OPAQUE:
-       assert 'S' == act_type.char
+        #check is str for now
+        #length adjusted later
+        exp_type = _DTYPE_CONV[exp_type]
+        act_type = act_type.char
     else:
        exp_type = np.dtype(_DTYPE_CONV[exp_type])
     assert exp_type == act_type
