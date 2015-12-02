@@ -112,6 +112,8 @@ cdef class Core(object):
         err = self.inst.tag_get_length(tag.inst,length);
         check_error(err,())
         cdef np.ndarray data = np.empty((length*len(entity_handles),),dtype=np_tag_type(type))
+        if type is types.MB_TYPE_OPAQUE:
+             data = np.asarray(data,dtype='S' + str(length))
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_get_data(tag.inst, deref(r.inst), <void*> data.data)
