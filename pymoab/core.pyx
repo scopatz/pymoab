@@ -7,7 +7,7 @@ import numpy as np
 from . cimport moab
 from .tag cimport Tag
 from .range cimport Range
-from .types import check_error, np_tag_type
+from .types import check_error, np_tag_type, verify_type
 from . import types
 
 cdef class Core(object):
@@ -96,6 +96,7 @@ cdef class Core(object):
         cdef moab.DataType type
         err = self.inst.tag_get_data_type(tag.inst, type);
         check_error(err, ())
+        verify_type(type,data.dtype)
         cdef int length
         err = self.inst.tag_get_length(tag.inst,length);
         check_error(err,())     
@@ -119,7 +120,7 @@ cdef class Core(object):
         cdef int length
         err = self.inst.tag_get_length(tag.inst,length);
         check_error(err,())
-        cdef np.ndarray data = np.empty((length*len(entity_handles),),dtype=np_tag_type(type))
+        cdef np.ndarray data = np.empty((length*len(entity_handles),),dtype=np.dtype(np_tag_type(type)))
         if type is types.MB_TYPE_OPAQUE:
              data = np.asarray(data,dtype='S' + str(length))
         if isinstance(entity_handles,Range):

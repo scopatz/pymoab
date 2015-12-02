@@ -65,18 +65,25 @@ MB_TYPE_HANDLE   = moab.MB_TYPE_HANDLE
 MB_MAX_DATA_TYPE = moab.MB_MAX_DATA_TYPE
 
 _DTYPE_CONV = {
-    MB_TYPE_OPAQUE   : 'S1',
-    MB_TYPE_INTEGER  : np.int32,
-    MB_TYPE_DOUBLE   : np.float64,
-    MB_TYPE_BIT      : 'yikes',
-    MB_TYPE_HANDLE   : np.uint64,
-    MB_MAX_DATA_TYPE : np.uint64
+    MB_TYPE_OPAQUE   : 'S',
+    MB_TYPE_INTEGER  : 'int32',
+    MB_TYPE_DOUBLE   : 'float64',
+    MB_TYPE_BIT      : 'S',
+    MB_TYPE_HANDLE   : 'uint64',
+    MB_MAX_DATA_TYPE : 'uint64'
     }
 
 
 def np_tag_type(type):
     return _DTYPE_CONV[type];
 
+def verify_type(exp_type,act_type):
+    if exp_type == MB_TYPE_OPAQUE:
+       assert 'S' == act_type.char
+    else:
+       exp_type = np.dtype(_DTYPE_CONV[exp_type])
+    assert exp_type == act_type
+    
 # Entity types
 MBVERTEX = moab.MBVERTEX
 MBEDGE = moab.MBEDGE
