@@ -93,6 +93,14 @@ cdef class Core(object):
         cdef moab.ErrorCode err
         cdef Range r
         cdef np.ndarray[np.uint64_t, ndim=1] arr
+        cdef moab.DataType type
+        err = self.inst.tag_get_data_type(tag.inst, type);
+        check_error(err, ())
+        cdef int length
+        err = self.inst.tag_get_length(tag.inst,length);
+        check_error(err,())     
+        if type == types.MB_TYPE_OPAQUE:
+            data = np.asarray(data,dtype='S'+str(length))
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_set_data(tag.inst, deref(r.inst), <const void*> data.data)
