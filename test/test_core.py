@@ -32,7 +32,9 @@ def testinteger_tag():
 
     assert len(data) == 1
     
-    assert data[0] == test_val 
+    assert data[0] == test_val
+
+    assert data.dtype == 'int32'
 
 def test_double_tag():
     
@@ -53,6 +55,8 @@ def test_double_tag():
     assert len(data) == 1
 
     assert data[0] == test_val
+
+    assert data.dtype == 'float64'
 
 def test_opaque_tag():
 
@@ -77,7 +81,6 @@ def test_opaque_tag():
     assert data[0] == test_val
 
     assert data.dtype == '|S' + str(tag_length)
-
     
 def vertex_handle(core):
 
