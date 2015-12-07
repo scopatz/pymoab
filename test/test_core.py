@@ -40,7 +40,7 @@ def test_double_tag():
 
     vh = vertex_handle(mb)
 
-    test_tag = mb.tag_get_handle("Test1",1,types.MB_TYPE_DOUBLE)
+    test_tag = mb.tag_get_handle("Test",1,types.MB_TYPE_DOUBLE)
 
     test_val = 4.4
 
@@ -62,7 +62,7 @@ def test_opaque_tag():
 
     tag_length = 6
 
-    test_tag = mb.tag_get_handle("Test2",tag_length,types.MB_TYPE_OPAQUE)
+    test_tag = mb.tag_get_handle("Test",tag_length,types.MB_TYPE_OPAQUE)
 
     test_val = 'four'
 
