@@ -86,9 +86,6 @@ def test_double_tag():
         print "Shouldn't be here. Test fails."
         raise AssertionError
 
-    
-    
-    
 def test_opaque_tag():
 
     mb = core.Core()
@@ -107,7 +104,9 @@ def test_opaque_tag():
 
     data = mb.tag_get_data(test_tag, vh)
 
-    assert len(data) == tag_length
+    assert len(data) == 1
+
+    assert data.nbytes == tag_length
 
     assert data[0] == test_val
 
