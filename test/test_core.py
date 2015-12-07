@@ -58,6 +58,37 @@ def test_double_tag():
 
     assert data.dtype == 'float64'
 
+    test_tag = mb.tag_get_handle("Test1",1,types.MB_TYPE_DOUBLE)
+
+    test_val = 4.4
+
+    test_tag_data = np.array((test_val),dtype='float32')
+
+    try:
+        mb.tag_set_data(test_tag, vh, test_tag_data)
+    except AssertionError:
+        pass
+    else:
+        print "Shouldn't be here. Test fails."
+        raise AssertionError
+
+    test_tag = mb.tag_get_handle("Test2",1,types.MB_TYPE_DOUBLE)
+
+    test_val = 4.4
+
+    test_tag_data = np.array((test_val),dtype='int32')
+
+    try:
+        mb.tag_set_data(test_tag, vh, test_tag_data)
+    except AssertionError:
+        pass
+    else:
+        print "Shouldn't be here. Test fails."
+        raise AssertionError
+
+    
+    
+    
 def test_opaque_tag():
 
     mb = core.Core()
