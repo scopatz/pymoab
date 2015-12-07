@@ -74,18 +74,34 @@ _DTYPE_CONV = {
     }
 
 
-def np_tag_type(type):
-    return _DTYPE_CONV[type];
+_VALID_DTYPES= {
+    MB_TYPE_OPAQUE   : ['S'],
+    MB_TYPE_INTEGER  : ['int32','int64'],
+    MB_TYPE_DOUBLE   : ['float64'],
+    MB_TYPE_BIT      : ['S1'],
+    MB_TYPE_HANDLE   : ['uint64'],
+    MB_MAX_DATA_TYPE : ['uint64']
+}
 
-def verify_type(exp_type,act_type):
-    if exp_type == MB_TYPE_OPAQUE:
-        #check is str for now
-        #length adjusted later
-        exp_type = _DTYPE_CONV[exp_type]
-        act_type = act_type.char
+def np_tag_type(type):
+    return _DTYPE_CONV[type]
+
+def verify_type(tag_type,tag_length,tag_data):
+
+    assert tag_type in _DTYPE_CONV.keys()
+    
+    if MB_TYPE_OPAQUE == tag_type:
+        #so long as the array is a string type, we're happy
+        is_valid = tag_data.dtype.char in _VALID_DTYPES[tag_type]
+        final_type = _DTYPE_CONV[tag_type]+str(tag_length)
     else:
-       exp_type = np.dtype(_DTYPE_CONV[exp_type])
-    assert exp_type == act_type
+        is_valid = tag_data.dtype in _VALID_DTYPES[tag_type]
+        final_type = _DTYPE_CONV[tag_type]
+
+    assert is_valid
+    tag_data = np.asarray(tag_data, dtype=final_type)
+    return tag_data 
+    
     
 # Entity types
 MBVERTEX = moab.MBVERTEX
