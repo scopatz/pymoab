@@ -68,7 +68,7 @@ _DTYPE_CONV = {
     MB_TYPE_OPAQUE   : 'S',
     MB_TYPE_INTEGER  : 'int32',
     MB_TYPE_DOUBLE   : 'float64',
-    MB_TYPE_BIT      : 'S',
+    MB_TYPE_BIT      : 'bool',
     MB_TYPE_HANDLE   : 'uint64',
     MB_MAX_DATA_TYPE : 'uint64'
     }
@@ -76,9 +76,9 @@ _DTYPE_CONV = {
 
 _VALID_DTYPES= {
     MB_TYPE_OPAQUE   : ['S'],
-    MB_TYPE_INTEGER  : ['int32','int64'],
+    MB_TYPE_INTEGER  : ['int8','int16','int32','int64'],
     MB_TYPE_DOUBLE   : ['float64'],
-    MB_TYPE_BIT      : ['S1'],
+    MB_TYPE_BIT      : ['int8','int16','int32','int64','S1','bool'],
     MB_TYPE_HANDLE   : ['uint64'],
     MB_MAX_DATA_TYPE : ['uint64']
 }
