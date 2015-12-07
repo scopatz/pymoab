@@ -7,7 +7,7 @@ import numpy as np
 from . cimport moab
 from .tag cimport Tag
 from .range cimport Range
-from .types import check_error, np_tag_type, verify_type
+from .types import check_error, np_tag_type, validate_type
 from . import types
 
 cdef class Core(object):
@@ -99,7 +99,7 @@ cdef class Core(object):
         cdef int length
         err = self.inst.tag_get_length(tag.inst,length);
         check_error(err,())
-        data = verify_type(type,length,data)        
+        data = validate_type(type,length,data)
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_set_data(tag.inst, deref(r.inst), <const void*> data.data)
