@@ -7,7 +7,7 @@ import numpy as np
 from . cimport moab
 from .tag cimport Tag
 from .range cimport Range
-from .types import check_error
+from .types import check_error, np_tag_type, validate_type
 from . import types
 
 cdef class Core(object):
@@ -83,9 +83,9 @@ cdef class Core(object):
             check_error(err, exceptions)
         return handles
 
-    def tag_get_handle(self, const char* name, int size, moab.DataType type, exceptions = ()):
+    def tag_get_handle(self, const char* name, int size, moab.DataType tag_type, exceptions = ()):
         cdef Tag tag = Tag()
-        cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, type, tag.inst, types.MB_TAG_DENSE|types.MB_TAG_CREAT)
+        cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, tag_type, tag.inst, types.MB_TAG_DENSE|types.MB_TAG_CREAT)
         check_error(err, exceptions)
         return tag
     
@@ -93,6 +93,13 @@ cdef class Core(object):
         cdef moab.ErrorCode err
         cdef Range r
         cdef np.ndarray[np.uint64_t, ndim=1] arr
+        cdef moab.DataType tag_type
+        err = self.inst.tag_get_data_type(tag.inst, tag_type);
+        check_error(err, ())
+        cdef int length
+        err = self.inst.tag_get_length(tag.inst,length);
+        check_error(err,())
+        data = validate_type(tag_type,length,data)
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_set_data(tag.inst, deref(r.inst), <const void*> data.data)
@@ -100,4 +107,27 @@ cdef class Core(object):
             arr = entity_handles
             err = self.inst.tag_set_data(tag.inst, <unsigned long*> arr.data, len(entity_handles), <const void*> data.data)
         check_error(err, exceptions)
-    
+
+    def tag_get_data(self, Tag tag, np.ndarray[np.uint64_t, ndim=1] entity_handles, exceptions = ()):
+        cdef moab.ErrorCode err
+        cdef Range r
+        cdef np.ndarray[np.uint64_t, ndim=1] arr
+        cdef moab.DataType tag_type
+        err = self.inst.tag_get_data_type(tag.inst, tag_type);
+        check_error(err,())
+        cdef int length
+        err = self.inst.tag_get_length(tag.inst,length);
+        check_error(err,())
+        cdef np.ndarray data
+        if tag_type is types.MB_TYPE_OPAQUE:
+            data = np.empty((len(entity_handles),),dtype='S'+str(length))
+        else:
+            data = np.empty((length*len(entity_handles),),dtype=np.dtype(np_tag_type(tag_type)))
+        if isinstance(entity_handles,Range):
+            r = entity_handles
+            err = self.inst.tag_get_data(tag.inst, deref(r.inst), <void*> data.data)
+        else:
+            arr = entity_handles
+            err = self.inst.tag_get_data(tag.inst, <unsigned long*> arr.data, len(entity_handles), <void*> data.data)
+        check_error(err,exceptions)
+        return data

@@ -1,6 +1,8 @@
 """Python wrappers for MOAB Types."""
 
 from . cimport moab
+cimport numpy as np
+import numpy as np
 
 # Error codes
 MB_SUCCESS = moab.MB_SUCCESS
@@ -53,6 +55,52 @@ def check_error(int err, tuple exceptions, **kwargs):
         msg += ': '
         msg += ', '.join(sorted(['{0}={1!r}'.format(k, v) for k, v in kwargs.items()]))
     raise errtype(msg)
+
+# Data Types
+MB_TYPE_OPAQUE = moab.MB_TYPE_OPAQUE
+MB_TYPE_INTEGER = moab.MB_TYPE_INTEGER
+MB_TYPE_DOUBLE = moab.MB_TYPE_DOUBLE
+MB_TYPE_BIT = moab.MB_TYPE_BIT
+MB_TYPE_HANDLE = moab.MB_TYPE_HANDLE
+MB_MAX_DATA_TYPE = moab.MB_MAX_DATA_TYPE
+
+_DTYPE_CONV = {
+    MB_TYPE_OPAQUE: 'S',
+    MB_TYPE_INTEGER: 'int32',
+    MB_TYPE_DOUBLE: 'float64',
+    MB_TYPE_BIT: 'bool',
+    MB_TYPE_HANDLE: 'uint64',
+    MB_MAX_DATA_TYPE: 'uint64'
+    }
+
+
+_VALID_DTYPES= {
+    MB_TYPE_OPAQUE: frozenset(['S']),
+    MB_TYPE_INTEGER: frozenset(['int8','int16','int32','int64']),
+    MB_TYPE_DOUBLE: frozenset(['float64']),
+    MB_TYPE_BIT: frozenset(['int8','int16','int32','int64','S1','bool']),
+    MB_TYPE_HANDLE: frozenset(['uint64']),
+    MB_MAX_DATA_TYPE: frozenset(['uint64'])
+}
+
+def np_tag_type(type):
+    return _DTYPE_CONV[type]
+
+def validate_type(tag_type,tag_length,tag_data):
+
+    assert tag_type in _DTYPE_CONV.keys()
+
+    if MB_TYPE_OPAQUE == tag_type:
+        #so long as the array is a string type, we're happy
+        is_valid = tag_data.dtype.char in _VALID_DTYPES[tag_type]
+        final_type = _DTYPE_CONV[tag_type]+str(tag_length)
+    else:
+        is_valid = str(tag_data.dtype) in _VALID_DTYPES[tag_type]
+        final_type = _DTYPE_CONV[tag_type]
+
+    assert is_valid
+    tag_data = np.asarray(tag_data, dtype=final_type)
+    return tag_data
 
 
 # Entity types
