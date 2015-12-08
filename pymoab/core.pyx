@@ -83,9 +83,9 @@ cdef class Core(object):
             check_error(err, exceptions)
         return handles
 
-    def tag_get_handle(self, const char* name, int size, moab.DataType type, exceptions = ()):
+    def tag_get_handle(self, const char* name, int size, moab.DataType tag_type, exceptions = ()):
         cdef Tag tag = Tag()
-        cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, type, tag.inst, types.MB_TAG_DENSE|types.MB_TAG_CREAT)
+        cdef moab.ErrorCode err = self.inst.tag_get_handle(name, size, tag_type, tag.inst, types.MB_TAG_DENSE|types.MB_TAG_CREAT)
         check_error(err, exceptions)
         return tag
     
@@ -93,13 +93,13 @@ cdef class Core(object):
         cdef moab.ErrorCode err
         cdef Range r
         cdef np.ndarray[np.uint64_t, ndim=1] arr
-        cdef moab.DataType type
-        err = self.inst.tag_get_data_type(tag.inst, type);
+        cdef moab.DataType tag_type
+        err = self.inst.tag_get_data_type(tag.inst, tag_type);
         check_error(err, ())
         cdef int length
         err = self.inst.tag_get_length(tag.inst,length);
         check_error(err,())
-        data = validate_type(type,length,data)
+        data = validate_type(tag_type,length,data)
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_set_data(tag.inst, deref(r.inst), <const void*> data.data)
@@ -112,17 +112,17 @@ cdef class Core(object):
         cdef moab.ErrorCode err
         cdef Range r
         cdef np.ndarray[np.uint64_t, ndim=1] arr
-        cdef moab.DataType type
-        err = self.inst.tag_get_data_type(tag.inst, type);
+        cdef moab.DataType tag_type
+        err = self.inst.tag_get_data_type(tag.inst, tag_type);
         check_error(err,())
         cdef int length
         err = self.inst.tag_get_length(tag.inst,length);
         check_error(err,())
         cdef np.ndarray data
-        if type is types.MB_TYPE_OPAQUE:
+        if tag_type is types.MB_TYPE_OPAQUE:
             data = np.empty((len(entity_handles),),dtype='S'+str(length))
         else:
-            data = np.empty((length*len(entity_handles),),dtype=np.dtype(np_tag_type(type)))
+            data = np.empty((length*len(entity_handles),),dtype=np.dtype(np_tag_type(tag_type)))
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_get_data(tag.inst, deref(r.inst), <void*> data.data)
