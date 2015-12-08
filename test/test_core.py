@@ -111,7 +111,19 @@ def test_opaque_tag():
     assert data[0] == test_val
 
     assert data.dtype == '|S' + str(tag_length)
-    
+
+def test_create_meshset():
+
+    mb = core.Core()
+
+    msh = mb.create_meshset()
+
+    vh = vertex_handle(mb)
+
+    mb.add_entities(msh,vh)
+
+    #best we can do for now
+
 def vertex_handle(core):
 
     coord = np.array((1,1,1),dtype='float64')
@@ -121,3 +133,30 @@ def vertex_handle(core):
     vert_copy = np.array((vert[0],),dtype='uint64')
 
     return vert_copy
+
+def test_create_elements():
+
+    mb = core.Core()
+
+    coords = np.array((0,0,0,1,0,0,1,1,1),dtype='float64')
+
+    verts = mb.create_vertices(coords)
+
+    assert 3 == verts.size()
+
+    verts = np.array(((verts[0],verts[1],verts[2]),),dtype='uint64')
+
+    tris = mb.create_elements(types.MBTRI,verts)
+
+    assert 1 == len(tris)
+
+    #check that the element is there via GLOBAL_ID tag
+    global_id_tag = mb.tag_get_handle("GLOBAL_ID",1,types.MB_TYPE_INTEGER)
+
+    tri_id = mb.tag_get_data(global_id_tag, tris)
+
+    assert 1 == len(tri_id)
+
+    print tri_id
+
+    assert 0 == tri_id[0]
