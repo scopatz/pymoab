@@ -58,30 +58,30 @@ def check_error(int err, tuple exceptions, **kwargs):
     raise errtype(msg)
 
 # Data Types
-MB_TYPE_OPAQUE  = moab.MB_TYPE_OPAQUE
-MB_TYPE_INTEGER  = moab.MB_TYPE_INTEGER
-MB_TYPE_DOUBLE   = moab.MB_TYPE_DOUBLE
-MB_TYPE_BIT      = moab.MB_TYPE_BIT
-MB_TYPE_HANDLE   = moab.MB_TYPE_HANDLE
+MB_TYPE_OPAQUE = moab.MB_TYPE_OPAQUE
+MB_TYPE_INTEGER = moab.MB_TYPE_INTEGER
+MB_TYPE_DOUBLE = moab.MB_TYPE_DOUBLE
+MB_TYPE_BIT = moab.MB_TYPE_BIT
+MB_TYPE_HANDLE = moab.MB_TYPE_HANDLE
 MB_MAX_DATA_TYPE = moab.MB_MAX_DATA_TYPE
 
 _DTYPE_CONV = {
-    MB_TYPE_OPAQUE   : 'S',
-    MB_TYPE_INTEGER  : 'int32',
-    MB_TYPE_DOUBLE   : 'float64',
-    MB_TYPE_BIT      : 'bool',
-    MB_TYPE_HANDLE   : 'uint64',
-    MB_MAX_DATA_TYPE : 'uint64'
+    MB_TYPE_OPAQUE: 'S',
+    MB_TYPE_INTEGER: 'int32',
+    MB_TYPE_DOUBLE: 'float64',
+    MB_TYPE_BIT: 'bool',
+    MB_TYPE_HANDLE: 'uint64',
+    MB_MAX_DATA_TYPE: 'uint64'
     }
 
 
 _VALID_DTYPES= {
-    MB_TYPE_OPAQUE   : FrozenSet(['S']),
-    MB_TYPE_INTEGER  : FrozenSet(['int8','int16','int32','int64']),
-    MB_TYPE_DOUBLE   : FrozenSet(['float64']),
-    MB_TYPE_BIT      : FrozenSet(['int8','int16','int32','int64','S1','bool']),
-    MB_TYPE_HANDLE   : FrozenSet(['uint64']),
-    MB_MAX_DATA_TYPE : FrozenSet(['uint64'])
+    MB_TYPE_OPAQUE: FrozenSet(['S']),
+    MB_TYPE_INTEGER: FrozenSet(['int8','int16','int32','int64']),
+    MB_TYPE_DOUBLE: FrozenSet(['float64']),
+    MB_TYPE_BIT: FrozenSet(['int8','int16','int32','int64','S1','bool']),
+    MB_TYPE_HANDLE: FrozenSet(['uint64']),
+    MB_MAX_DATA_TYPE: FrozenSet(['uint64'])
 }
 
 def np_tag_type(type):
