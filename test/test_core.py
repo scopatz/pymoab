@@ -14,7 +14,7 @@ def test_write_mesh():
 
     assert os.path.isfile("outfile.h5m")
 
-def testinteger_tag():
+def test_integer_tag():
     
     mb = core.Core()
 
