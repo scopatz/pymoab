@@ -3,7 +3,6 @@
 from . cimport moab
 cimport numpy as np
 import numpy as np
-from sets import FrozenSet
 
 # Error codes
 MB_SUCCESS = moab.MB_SUCCESS
@@ -76,12 +75,12 @@ _DTYPE_CONV = {
 
 
 _VALID_DTYPES= {
-    MB_TYPE_OPAQUE: FrozenSet(['S']),
-    MB_TYPE_INTEGER: FrozenSet(['int8','int16','int32','int64']),
-    MB_TYPE_DOUBLE: FrozenSet(['float64']),
-    MB_TYPE_BIT: FrozenSet(['int8','int16','int32','int64','S1','bool']),
-    MB_TYPE_HANDLE: FrozenSet(['uint64']),
-    MB_MAX_DATA_TYPE: FrozenSet(['uint64'])
+    MB_TYPE_OPAQUE: frozenset(['S']),
+    MB_TYPE_INTEGER: frozenset(['int8','int16','int32','int64']),
+    MB_TYPE_DOUBLE: frozenset(['float64']),
+    MB_TYPE_BIT: frozenset(['int8','int16','int32','int64','S1','bool']),
+    MB_TYPE_HANDLE: frozenset(['uint64']),
+    MB_MAX_DATA_TYPE: frozenset(['uint64'])
 }
 
 def np_tag_type(type):
