@@ -95,7 +95,7 @@ def validate_type(tag_type,tag_length,tag_data):
         is_valid = tag_data.dtype.char in _VALID_DTYPES[tag_type]
         final_type = _DTYPE_CONV[tag_type]+str(tag_length)
     else:
-        is_valid = tag_data.dtype in _VALID_DTYPES[tag_type]
+        is_valid = str(tag_data.dtype) in _VALID_DTYPES[tag_type]
         final_type = _DTYPE_CONV[tag_type]
 
     assert is_valid
