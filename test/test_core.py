@@ -111,3 +111,33 @@ def test_range():
     test_tag = mb.tag_get_handle("Test",1,types.MB_TYPE_INTEGER)
     data = np.array((1,))
     mb.tag_set_data(test_tag,vert,data)
+
+def test_tag_failures():
+
+    mb = core.Core()
+    coord = np.array((1,1,1),dtype='float64')
+    verts = mb.create_vertices(coord)
+    verts_illicit_copy = np.array((verts[0],),dtype='uint32')
+    test_tag = mb.tag_get_handle("Test",1,types.MB_TYPE_INTEGER)
+    data = np.array((1,))
+
+    #this operation should fail due to the entity handle data type
+    mb.tag_set_data(test_tag,verts,data)
+    try:
+        mb.tag_set_data(test_tag, verts_illicit_copy, data)
+    except AssertionError:
+        pass
+    else:
+        print "Shouldn't be here. Test fails."
+        raise AssertionError
+
+
+    global_id_tag = mb.tag_get_handle("GLOBAL_ID",1,types.MB_TYPE_INTEGER)
+    #so should this one
+    try:
+        tri_id = mb.tag_get_data(global_id_tag, verts_illicit_copy)
+    except AssertionError:
+        pass
+    else:
+        print "Shouldn't be here. Test fails."
+        raise AssertionError
