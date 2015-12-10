@@ -89,7 +89,7 @@ cdef class Core(object):
         check_error(err, exceptions)
         return tag
     
-    def tag_set_data(self, Tag tag, np.ndarray[np.uint64_t, ndim=1] entity_handles, np.ndarray data, exceptions = ()):
+    def tag_set_data(self, Tag tag, entity_handles, np.ndarray data, exceptions = ()):
         cdef moab.ErrorCode err
         cdef Range r
         cdef np.ndarray[np.uint64_t, ndim=1] arr
@@ -103,12 +103,15 @@ cdef class Core(object):
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_set_data(tag.inst, deref(r.inst), <const void*> data.data)
-        else:
+        elif isinstance(entity_handles,np.ndarray):
+            assert entity_handles.dtype == 'uint64'
             arr = entity_handles
             err = self.inst.tag_set_data(tag.inst, <unsigned long*> arr.data, len(entity_handles), <const void*> data.data)
-        check_error(err, exceptions)
+            check_error(err, exceptions)
+        else:
+            check_error(types.MB_FAILURE)
 
-    def tag_get_data(self, Tag tag, np.ndarray[np.uint64_t, ndim=1] entity_handles, exceptions = ()):
+    def tag_get_data(self, Tag tag, entity_handles, exceptions = ()):
         cdef moab.ErrorCode err
         cdef Range r
         cdef np.ndarray[np.uint64_t, ndim=1] arr
@@ -126,8 +129,11 @@ cdef class Core(object):
         if isinstance(entity_handles,Range):
             r = entity_handles
             err = self.inst.tag_get_data(tag.inst, deref(r.inst), <void*> data.data)
-        else:
+        elif isinstance(entity_handles,np.ndarray):
+            assert entity_handles.dtype == 'uint64'
             arr = entity_handles
             err = self.inst.tag_get_data(tag.inst, <unsigned long*> arr.data, len(entity_handles), <void*> data.data)
-        check_error(err,exceptions)
+            check_error(err,exceptions)
+        else:
+            check_error(types.MB_FAILURE)
         return data
