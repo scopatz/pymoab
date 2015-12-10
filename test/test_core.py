@@ -102,3 +102,12 @@ def test_create_elements():
     tri_id = mb.tag_get_data(global_id_tag, tris)
     assert 1 == len(tri_id)
     assert 0 == tri_id[0]
+
+def test_range():
+
+    mb = core.Core()
+    coord = np.array((1,1,1),dtype='float64')
+    vert = mb.create_vertices(coord)
+    test_tag = mb.tag_get_handle("Test",1,types.MB_TYPE_INTEGER)
+    data = np.array((1,))
+    mb.tag_set_data(test_tag,vert,data)
