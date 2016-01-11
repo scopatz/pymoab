@@ -112,6 +112,12 @@ def test_range():
     data = np.array((1,))
     mb.tag_set_data(test_tag,vert,data)
 
+    dum = 0
+    for v in vert:
+        dum += 1
+        if dum > 100: break
+    assert vert.size() is dum
+
 def test_tag_failures():
 
     mb = core.Core()
