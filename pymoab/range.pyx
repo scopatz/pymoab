@@ -33,6 +33,11 @@ cdef class Range(object):
         """clears the contents of the list."""
         self.inst.clear()
 
+    def __iter__(self):
+        cdef int i = 0
+        for i in range(0, self.inst.size()):
+            yield self[i]
+            
     def __getitem__(self, int index):
         cdef moab.EntityHandle rtn = deref(self.inst)[index]
         return rtn
