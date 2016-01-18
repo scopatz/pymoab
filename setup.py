@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from __future__ import print_function
 from setuptools import setup, find_packages
 import os
 import sys
@@ -14,7 +14,7 @@ moab_default = '/usr/'
 for arg in sys.argv:
     if "--moab-path" in arg:
         moab_root = arg.split("=", 1)[-1]
-        print "Set MOAB location with user-provided install path."
+        print("Set MOAB location with user-provided install path.")
         sys.argv.remove(arg)
 
 #search environment for moab install
