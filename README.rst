@@ -1,32 +1,12 @@
-PyMOAB
-======
 
-PyMOAB is a python interface to the Mesh Oriented datABase (`MOAB <http://sigma.mcs.anl.gov/moab-library/>`_).
+.. _MOAB: http://sigma.mcs.anl.gov/moab-library/
 
-Installation
-------------
+PyMOAB: a Python interface to the Mesh Oriented dAtaBase (MOAB)
+===============================================================
 
-PyMOAB has the following dependencies:
+**This project has now become part of the Mesh Oriented dAtaBase
+(** MOAB_ **).**
 
-1. (`Cython <http://cython.org/>`_)
-2. (`numpy <http://www.numpy.org/>`_)
-3. (`MOAB <http://sigma.mcs.anl.gov/moab-library/>`_)
-4. (`Nose <https://nose.readthedocs.org/en/latest/>`_)
-
-   PyMOAB relies on a prior installation of MOAB. The root location of this install should be added to the user environment in the variable `MOAB_PATH` or provided to the installation command as --moab-path=<moab_installation_dir>.
-
-   Along with this installation PyMOAB requires one small modification to the MOAB install. The TagInfo.hpp file found in the source must be copied/linked to the installation's include directory at './moab/TagInfo.hpp'.
-
-After these steps are complete PyMOAB can be installed using the command line:
-
-```python setup.py install --user``` if the path is provided in the environment variable `MOAB_PATH`
-
-OR
-
-```python setup.py install --user --moab-path=<moab_installation_dir>```
-
-
-Testing
--------
-
-Enter the pymoab test directory and run `$nosetests`.
+For more information on
+building and using this interface please visit
+http://sigma.mcs.anl.gov/moab-library/.
